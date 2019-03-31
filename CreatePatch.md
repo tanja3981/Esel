@@ -1,3 +1,5 @@
+# Modify Eversense App
+
 1. Install the official [EversenseApp](https://play.google.com/store/apps/details?id=com.senseonics.gen12androidapp) from the Playstore
 
 2. Extract the APK of this App (e.g. with [MyAppSharer](https://play.google.com/store/apps/details?id=com.yschi.MyAppSharer))
@@ -43,4 +45,4 @@ jarsigner -keystore <keystore> -storepass <passwordKeystore> -keypass <passwordK
 
 11. Uninstall the original Eversense App on your phone (Warning: the local history of your CGM readings in your Eversense App will get lost) and install your new APK. The new App will behave just like the original one - except of the difference that the CGM reading can be accessed from other Apps e.g. by ESEL
 
-  Tipp: If you signed the apk with the same key that the current apk is signed with, you can install the new version as update on the existing and don't need to uninstall! 
+  Tipp: If you signed the apk with the same key that the current apk is signed with, you can install the new version as update on the existing and don't need to uninstall!
