@@ -11,6 +11,6 @@
   * Inter-App-Broadcasts: Activate "Send to AAPS and xDrip". In xDrip and/or AndroidAPS activate the input method "640g/Eversense".
   * "Smooth Data" applies a smoothing algorithm to the raw values and provides these smoothed values instead of the raw readings. Smoothing is per default disabled.
   * For feedback contact @BernhardRo
-4. For the modification of the Eversense App, see: https://github.com/BernhardRo/Esel/wiki/How-to-modify-the-Android-Eversense-App  
+4. For the modification of the Eversense App, see [CreatePatch](./CreatePatch.md) .
 
 If you run esel with a fresh installation of Eversense for the first time, it can take up to 15min until your first values appear in xDrip!
