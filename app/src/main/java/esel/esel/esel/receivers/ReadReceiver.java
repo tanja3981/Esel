@@ -143,8 +143,12 @@ public class ReadReceiver extends BroadcastReceiver {
                         }
                         sgv.setDirection(slopeByMinute);
 
-
-                        if (sgv.value >= 39 && oldValue >= 39) {
+                        if(sgv.value == SGV.LOW)  {
+                            ToastUtils.makeToast("Low?");
+                            LocalBroadcaster.broadcast(sgv);
+                            result++;
+                        }
+                        else if (sgv.value >= 39 && oldValue >= 39) {
                             //ToastUtils.makeToast(sgv.toString());
                             if(SP.getBoolean("smooth_data",false) && smoothEnabled){
                                 sgv.smooth(oldValue);
