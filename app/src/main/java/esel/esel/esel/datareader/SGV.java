@@ -11,24 +11,48 @@ import esel.esel.esel.util.SP;
  */
 
 public class SGV {
+    public static final int LOW = 33; //any number that is not a error code and below 40
+
     public int value;
     public long timestamp;
     public String direction;
+    public String[] raw;
 
-    SGV(int value, long timestamp){
+    SGV(int value, long timestamp) {
         this.value = value;
         this.timestamp = timestamp;
 
-        if (this.value < 0) { this.value = 38;}
-        else if (this.value < 40) { this.value = 39;}
-        else if (this.value > 1000) { this.value = 38;}
-        else if (this.value > 400) { this.value = 400;}
+        if (this.value < 0) {
+            this.value = 38;
+        } else if (this.value < 40) {
+            this.value = LOW;
+        } else if (this.value > 1000) {
+            this.value = 38;
+        } else if (this.value > 400) {
+            this.value = 400;
+        }
+    }
+
+    SGV(int value, long timestamp, String[] raw) {
+        this(value, timestamp);
+        this.raw = raw;
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         DateFormat df = SimpleDateFormat.getDateTimeInstance();
-        return df.format(new Date(timestamp)) + ": " + value;
+        StringBuilder sb = new StringBuilder(df.format(new Date(timestamp)) + ": " + value);
+        if (this.raw != null && this.raw.length > 0) {
+            sb.append("(");
+            for (int i = 0; i < raw.length; i++) {
+                if (i > 0) {
+                    sb.append(", ");
+                }
+                sb.append(raw[i]);
+            }
+            sb.append(")");
+        }
+        return sb.toString();
     }
 
     public void setDirection(double slope_by_minute) {
@@ -50,23 +74,23 @@ public class SGV {
         }
     }
 
-    public void smooth(int last){
+    public void smooth(int last) {
         double smooth = this.value;
 
-        double lastSmooth = SP.getInt("readingSmooth",last*1000)/1000;
-        double factor = SP.getDouble("smooth_factor",0.3);
-        double correction = SP.getDouble("correction_factor",0.5);
+        double lastSmooth = SP.getInt("readingSmooth", last * 1000) / 1000;
+        double factor = SP.getDouble("smooth_factor", 0.3);
+        double correction = SP.getDouble("correction_factor", 0.5);
         int lastRaw = SP.getInt("lastReadingRaw", value);
 
         SP.putInt("lastReadingRaw", this.value);
 
-        double a=lastSmooth+(factor*(this.value-lastSmooth));
-        smooth=a+correction*((lastRaw-lastSmooth)+(this.value-a))/2;
+        double a = lastSmooth + (factor * (this.value - lastSmooth));
+        smooth = a + correction * ((lastRaw - lastSmooth) + (this.value - a)) / 2;
 
-        SP.putInt("readingSmooth",(int)Math.round(smooth*1000));
+        SP.putInt("readingSmooth", (int) Math.round(smooth * 1000));
 
-        if(this.value > SP.getInt("lower_limit",65)){
-            this.value = (int)Math.round(smooth);
+        if (this.value > SP.getInt("lower_limit", 65)) {
+            this.value = (int) Math.round(smooth);
         }
 
     }
