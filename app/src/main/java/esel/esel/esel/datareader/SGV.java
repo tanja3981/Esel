@@ -14,6 +14,7 @@ public class SGV {
     public int value;
     public long timestamp;
     public String direction;
+    public String[] raw;
 
     SGV(int value, long timestamp){
         this.value = value;
@@ -24,11 +25,26 @@ public class SGV {
         else if (this.value > 1000) { this.value = 38;}
         else if (this.value > 400) { this.value = 400;}
     }
+    SGV(int value, long timestamp, String[] raw) {
+        this(value, timestamp);
+        this.raw = raw;
+    }
 
     @Override
     public String toString(){
         DateFormat df = SimpleDateFormat.getDateTimeInstance();
-        return df.format(new Date(timestamp)) + ": " + value;
+        StringBuilder sb = new StringBuilder(df.format(new Date(timestamp)) + ": " + value);
+        if (this.raw != null && this.raw.length > 0) {
+            sb.append("(");
+            for (int i = 0; i < raw.length; i++) {
+                if (i > 0) {
+                    sb.append(", ");
+                }
+                sb.append(raw[i]);
+            }
+            sb.append(")");
+        }
+        return sb.toString();
     }
 
     public void setDirection(double slope_by_minute) {

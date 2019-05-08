@@ -60,19 +60,21 @@ public class Datareader {
             String glucoseLevel_str   = item.getString(1);
 //                        String groupId = item.getString(2);
 //                        String recordNumber = item.getString(3);
-//                        String glucoseRaw1    = item.getString(4);
-//                        String glucoseRaw2   = item.getString(5);
-//                        String glucoseRaw3 = item.getString(6);
-//                        String glucoseRaw4 = item.getString(7);
-//                        String glucoseRaw5    = item.getString(8);
-//                        String glucoseRaw6   = item.getString(9);
-//                        String glucoseRaw7 = item.getString(10);
-//                        String glucoseRaw8 = item.getString(11);
+                        String glucoseRaw1    = item.getString(4);
+                        String glucoseRaw2   = item.getString(5);
+                        String glucoseRaw3 = item.getString(6);
+                        String glucoseRaw4 = item.getString(7);
+                        String glucoseRaw5    = item.getString(8);
+                        String glucoseRaw6   = item.getString(9);
+                        String glucoseRaw7 = item.getString(10);
+                        String glucoseRaw8 = item.getString(11);
 
             String line = timestamp_str + "," +glucoseLevel_str;
             sb.append(timestamp_str + "," +glucoseLevel_str + "\n");
 
-            SGV sgv = Datareader.generateSGV(line);
+            SGV sgv = Datareader.generateSGV(timestamp_str, glucoseLevel_str, new String[]{
+                    glucoseRaw1, glucoseRaw2, glucoseRaw3, glucoseRaw4, glucoseRaw5, glucoseRaw6, glucoseRaw7, glucoseRaw8
+            });
 
             valueArray.add(sgv);
 
@@ -102,12 +104,14 @@ public class Datareader {
         return valueArray;
     }
 
-    public static SGV generateSGV(String dataString){
-        String[] tokens = dataString.split(",");
-        long timestamp = Long.parseLong(tokens[0]);
-        int value = Integer.parseInt(tokens[1]);
-        return new SGV(value, timestamp);
+
+    public static SGV generateSGV(String timestampString, String valueString, String[] raw) {
+        long timestamp = Long.parseLong(timestampString);
+        int value = Integer.parseInt(valueString);
+        return new SGV(value, timestamp, raw);
     }
+
+
 }
 
 
